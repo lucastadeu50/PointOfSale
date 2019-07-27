@@ -15,6 +15,7 @@ import java.util.*;
 
 public class OpenCSVReadAndParseToBean {
     private static final String SAMPLE_CSV_FILE_PATH = "/home/lucas/PointOfSaleDistance/PointOfSale.csv";
+    private static final String NULL = "NULL";
 
     public static void main(String[] args) throws IOException {
         ArrayList<PointOfSale> pointOfSales = new ArrayList<PointOfSale>();
@@ -37,7 +38,7 @@ public class OpenCSVReadAndParseToBean {
 
             Iterator<PointOfSale> csvPointOfSaleIterator = csvToBean.iterator();
 
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 10000; i++) {
                 pointOfSales.add(csvPointOfSaleIterator.next());
             }
 /*             int k=0;
@@ -75,11 +76,21 @@ public class OpenCSVReadAndParseToBean {
                     System.out.println(j);
                 }
                 Collections.sort(distances, Double::compareTo);
-                int i1;
-                if (pointOfSaleFinals.size() < 11) i1 = pointOfSaleFinals.size();
-                else i1 = 11;
+                if (pointOfSaleFinals.size() < 11) {
+                    int pointOfSaleFinalsSize = pointOfSaleFinals.size();
+                    for (int l = pointOfSaleFinalsSize; l < 11; l++) {
+                        PointOfSaleFinal pointOfSaleFinal = new PointOfSaleFinal();
+                        pointOfSaleFinal.distancia = 10000000000.0;
+                        pointOfSaleFinal.pos_id = NULL;
+                        pointOfSaleFinal.descricaoFaixa = NULL;
+                        pointOfSaleFinal.descricaoAtividadeComercial = NULL;
+                        pointOfSaleFinal.longitude = 10000000000.0;
+                        pointOfSaleFinal.latitude  = 10000000000.0;
+                        pointOfSaleFinals.add(pointOfSaleFinal);
+                    }
+                }
                 pointOfSaleFinals.sort(Comparator.comparing(PointOfSaleFinal::getDistancia));
-                pointOfSaleFinalsTop10 = pointOfSaleFinals.subList(0, i1);
+                pointOfSaleFinalsTop10 = pointOfSaleFinals.subList(0, 11);
                 for (int k = 0; k < pointOfSaleFinalsTop10.size(); k++) {
                     pointOfSaleFinalsComplete.add(pointOfSaleFinalsTop10.get(k));
                 }
